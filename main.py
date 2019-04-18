@@ -42,9 +42,9 @@ def copy_task(src):
     subtask_list = reversed(subtask_list)
 
     if "Basic" in product:
-        name = "Basic - " + domain + " : " + fullname
+        name = "Basic - " + domain + " - " + fullname
     elif "Business" in product:
-        name = "Business - " + domain + " : " + fullname
+        name = "Business - " + domain + " - " + fullname
 
     # Create new task
     new_task = asana.tasks.create({
