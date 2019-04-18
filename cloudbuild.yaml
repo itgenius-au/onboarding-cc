@@ -1,0 +1,10 @@
+steps:
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+  - functions
+  - deploy
+  - onboard_cc
+  - --runtime=python37
+  - --memory=256MB
+  - --source=.
+  - --trigger-topic=cc-onboarding
