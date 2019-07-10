@@ -18,7 +18,7 @@ def asana_client():
 def copy_task(src):
 
     # Instantiate Asana Client
-    asana = asana_client()9
+    asana = asana_client()
     # Get Template Data
     product = src['product']
     domain = src['domain']
