@@ -18,8 +18,7 @@ def asana_client():
 def copy_task(src):
 
     # Instantiate Asana Client
-    asana = asana_client()
-
+    asana = asana_client()9
     # Get Template Data
     product = src['product']
     domain = src['domain']
@@ -31,15 +30,23 @@ def copy_task(src):
     team = src['team']
 
     # Get original subtask list
-    subtasks = asana.tasks.subtasks(task)
-    subtask_list = []
+    maintasks = asana.tasks.subtasks(task)
+    maintask_list = []
 
     # Parse iterable to array
-    for subtask in subtasks:
-        subtask_list.append(subtask["name"])
+    for maintask in maintasks:
+        subtask_list = []
+        subtasks = asana.tasks.subtasks(maintask['id'])
+        for subtask in subtasks:
+            subtask_list.append(subtask['name'])
+        
+        maintask_list.append({
+            'name': maintask["name"],
+            'subtasks': subtask_list
+        })
 
     # Reverse order for Asana API
-    subtask_list = reversed(subtask_list)
+    maintask_list = reversed(maintask_list)
 
     if "Basic" in product:
         name = "Basic - " + domain + " - " + fullname
@@ -58,8 +65,11 @@ def copy_task(src):
     print("Created task : {0}" .format(new_task))
 
     # Add subtasks
-    for subtask_item in subtask_list:
-        asana.tasks.add_subtask(new_task['id'], {"name": subtask_item})
+    for maintask_item in maintask_list:
+        new_maintask = asana.tasks.add_subtask(new_task['id'], {"name": maintask_item['name']})
+
+        for subtask_item in maintask_item['subtasks']:
+            asana.tasks.add_subtask(new_maintask['id'], subtask)
 
     return new_task['id']
 
