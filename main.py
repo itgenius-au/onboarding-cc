@@ -68,7 +68,7 @@ def copy_task(src):
     for maintask_item in maintask_list:
         new_maintask = asana.tasks.add_subtask(new_task['id'], {"name": maintask_item['name']})
 
-        for subtask_item in maintask_item['subtasks']:
+        for subtask_item in reversed(maintask_item['subtasks']):
             asana.tasks.add_subtask(new_maintask['id'], {'name' : subtask_item})
 
     return new_task['id']
